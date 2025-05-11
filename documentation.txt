@@ -1,0 +1,5 @@
+10/05/25
+make a universal middleware that verifies the jwt token and sets data of user, remove role verifier middleware made previously
+complete visitors controller
+rectify admin controller
+notices buildup

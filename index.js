@@ -1,12 +1,22 @@
+//dependencies
 import express from "express";
 import http from "http";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+
+//routes
 import { userRoutes } from "./routes/user.routes.js";
 import { superAdminRoutes } from "./routes/superAdmin.route.js";
+import { guardRoutes } from "./routes/guard.route.js";
+import { residentRoute } from "./routes/residents.route.js";
+
+//services
 import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
+
+//middlewares
+import { verifier } from "./middlewares/verifyCookie.middleware.js";
 
 dotenv.config();
 
@@ -33,6 +43,8 @@ mongoose.connect(uri,{
   //routes
 app.use('/user',userRoutes);
 app.use('/superadmin',superAdminRoutes);    //signup of superadmin is not handled here and this route is only visible on admin dashboard if the user is superAdmin
+app.use('/guard',guardRoutes);
+app.use('/resident',residentRoute);
 
 //cloudinary configuration
 cloudinary.config({ 
@@ -41,7 +53,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SEC // Click 'View API Keys' above to copy your API secret
 });
 
-//server connection
+//server connection & socket logic
 const server = http.createServer(app);
 server.listen(port,()=>{
     console.log(`Listening on ${port}`);

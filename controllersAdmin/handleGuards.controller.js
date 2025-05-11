@@ -23,7 +23,7 @@ export const handleAddGuards = async(req,res)=>{
             });
         }
         const {fullName,phone,shift,status} = req.body;
-        if(!fullName ||!phone){
+        if(!fullName ||!phone || !shift){
             return res.status(400).json({
                 success:false,
                 message:"All fields are required",
@@ -56,7 +56,7 @@ export const handleAddGuards = async(req,res)=>{
             phone,
             shift,
             status
-        }})
+        }});
     } catch (error) {
         console.log(error);
         return res.status(500).json({

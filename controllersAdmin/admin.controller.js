@@ -1,16 +1,15 @@
-import {Resident} from "../models/residents.models.js"
-import { Houses } from "../models/houses.models.js";
+import {Admin} from "../models/admin.models.js"
 import { v2 as cloudinary } from "cloudinary";
 import { createToken } from "../services/auth.js";
 import bcrypt from "bcrypt"
 
-export const handleSignup = async(req,res) => {
+export const handleAdminSignup = async(req,res) => {
     try {
-        const {fullName,email, password, phone,emnum,flatNo,block,passkey} = req.body;
+        const {fullName,email, password, phone,emnum,flatNo,block, role,passkey,adminlevel} = req.body;
         //const {profilePhoto} = req.files;
 
          //==========================verification section===================//
-         if(!fullName || !email || !password || !phone || !emnum || !flatNo || !block  || !passkey){
+         if(!fullName || !email || !password || !phone || !emnum || !passkey || !adminlevel){
             return res.status(400).json({
                 success:false,
                 message:"All details are mandatory",
@@ -24,7 +23,7 @@ export const handleSignup = async(req,res) => {
         // }
 
         //=====================checking for preuser===========================
-        const preUser = await Resident.findOne({phone:phone, flatNo:flatNo});
+        const preUser = await Admin.findOne({phone:phone, });
         if(preUser){
             return res.status(400).json({
                 success:false,
@@ -33,21 +32,20 @@ export const handleSignup = async(req,res) => {
         }
 
         //validating a valid signup via Houses data of admin side
-         const record = await Houses.findOne({flatNo});
-        if(!record){
-             return res.status(400).json({
-                 success:false,
-                 message:"You are not found in our databases",
-             });
-         }
-
-         if((record.phone) !== phone || (passkey !== record.passkey) || (flatNo !== record.flatNo) || (block !== record.block)){
-            console.log(record.phone, phone, record.passkey, passkey, record.role, role, record.flatNo, flatNo, record.block, block,record.role, role)
-             return res.status(400).json({
-                 success:false,
-                 message:"Re-verify your entered details",
-             });
-         }
+        // const record = await Houses.findOne({flatNo});
+        //if(!record){
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"You are not found in our databases",
+        //     });
+        // }
+        
+        // if((record.phone) !== phone || (passkey !== record.passkey) || (flatNo !== record.flatNo) || (block !== record.block) || (role !== record.role)){
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"Re-verify your entered details",
+        //     });
+        // }
 
         //================image mimetype verify========================
         // const allowedMimeType = ['image/png','image/jpeg', 'webp'];
@@ -73,14 +71,16 @@ export const handleSignup = async(req,res) => {
         //========================user created====================================//
     
         const hashedPassword = await bcrypt.hash(password,10);
-        const response = await Resident.create({
+        const response = await Admin.create({
             fullName,
             email, 
             password:hashedPassword,
             phone,
+            adminlevel,
             emnum,
             flatNo,
             block,
+            role,
             passkey,
             // profilePhoto:{
             //     public_id: cloudinaryRes.public_id,
@@ -99,12 +99,12 @@ export const handleSignup = async(req,res) => {
                 maxAge:7 * 24 * 60 * 60 * 1000,
             });
             console.log("cookie set up")
-            console.log(req.headers);
             return res.status(200).json({success:true, 
                 message:"user Successfully created",
                 user:{
                     fullName:fullName,
                     email:email, 
+                    adminlevel,
                     phone:phone,
                     emnum:emnum,
                     flatNo:flatNo,
@@ -114,7 +114,6 @@ export const handleSignup = async(req,res) => {
                     //profilePhoto:profilePhoto
                 }
             })
-
         } catch (error) {
             return res.status(400).json({msg:"error in tokenization"})
         }
@@ -128,17 +127,17 @@ export const handleSignup = async(req,res) => {
     }
 }
 
-export const handleLogin = async(req,res) => {
+export const handleAdminLogin = async(req,res) => {
     try {
-        const {password, phone,passkey} = req.body;
-        if(!password || !phone || !passkey){
+        const {password, phone,role,passkey} = req.body;
+        if(!password || !phone || !role || !passkey){
             return res.status(400).json({
                 success:false,
                 message:"All details are mandatory",
             });
         }
 
-        const user = await Resident.findOne({phone});
+        const user = await Admin.findOne({phone});
         if(!user){
             return res.status(404).json({
                 success:false,
@@ -152,7 +151,7 @@ export const handleLogin = async(req,res) => {
                 message:"Password is wrong",
             });
         }
-        if((passkey !== user.passkey)){
+        if((passkey !== user.passkey || (role != user.role))){
             return res.status(400).json({
                 success:false,
                 message:"Either passkey or role is wrong",
@@ -174,9 +173,8 @@ export const handleLogin = async(req,res) => {
                     fullName:user.fullName,
                     email:user.email, 
                     phone:user.phone,
+                    adminlevel:user.adminlevel,
                     emnum:user.emnum,
-                    flatNo:user.flatNo,
-                    block:user.block,
                     role:user.role,
                     passkey:user.passkey,
                     //profilePhoto:user.profilePhoto
@@ -194,7 +192,7 @@ export const handleLogin = async(req,res) => {
     }
 }
 
-export const handleLogout = async(req,res) => {
+export const handleAdminLogout = async(req,res) => {
     try {
         res.clearCookie('jwt-token',{
             httpOnly:true,

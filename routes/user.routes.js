@@ -1,7 +1,7 @@
 import express from "express";
-import {handleLogin,handleLogout,handleSignup} from "../residentControllers/resident.controller.js"
-import {handleGuardLogin,handleGuardLogout,handleGuardSignup} from "../staffConstollers/guard.controller.js"
-import {handleAdminLogin,handleAdminSignup,handleAdminLogout} from "../adminControllers/admin.controller.js"
+import {handleLogin,handleLogout,handleSignup} from "../controllersResident/resident.controller.js"
+import {handleGuardLogin,handleGuardLogout,handleGuardSignup} from "../controllersGuard/guard.controller.js"
+import {handleAdminLogin,handleAdminSignup,handleAdminLogout} from "../controllersAdmin/admin.controller.js"
 
 
 const userRoutes = express.Router();
