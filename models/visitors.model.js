@@ -14,11 +14,19 @@ const visitorSchema = new mongoose.Schema({
     },
     resident:{
       type:Schema.Types.ObjectId,
-      ref:'Resident'
+      ref:'resident'
     },
-    residentPhone:{
+    flatNo:{
       type:String,
-      required:true
+        required:true
+    },
+    block:{
+        type:String,
+        required:true
+    },
+    photo:{
+        type:String,
+        required:true
     },
     vehicleDetails:[{
         type: {

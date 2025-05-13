@@ -80,7 +80,7 @@ export const updateVendor = async(req,res) =>{
     }
 }
 
-export const getVendors = async(Request,res) =>{
+export const getVendors = async(req,res) =>{
     try {
         const vendorsData = await Vendors.find({});
         if(!vendorsData){
@@ -174,7 +174,7 @@ export const updateService = async(req,res) =>{
     }
 }
 
-export const getService = async(Request,res) =>{
+export const getService = async(req,res) =>{
     try {
         const serviceData  = await Services.aggregate([
             {

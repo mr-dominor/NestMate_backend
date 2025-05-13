@@ -1,10 +1,16 @@
-10/05/25
+11/05/25
 make a universal middleware that verifies the jwt token and sets data of user, remove role verifier middleware made previously  ///done
 complete visitors controller    /////done
 rectify admin controller  ///left
 notices buildup   //done
 
-11/05/25
+12/05/25
 notices&events    //done
 services and pricing and taken by user
 complaint   //done
+
+13/05/25
+see all upgrades in eraser and do it by today
+
+//add notification of firebase unlimites notification
+long term

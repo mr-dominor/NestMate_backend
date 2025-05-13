@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const complaintSchema = new mongoose.Schema({
     title:{
@@ -12,6 +12,14 @@ const complaintSchema = new mongoose.Schema({
     weight:{
         type:Number,
         default:0
+    },
+    nature:{
+        type:String,
+        enum:['PUBLIC','PRIVATE'],
+        required:true,
+    },
+    residentId:{
+        type:Schema.Types.ObjectId,
     },
     status:{
         type:String,

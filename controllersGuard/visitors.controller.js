@@ -17,17 +17,44 @@ export const handleVisitorAdd = async(req,res) =>{
             });
         }
         
-        const {fullName, phone, visitorFor, vehicleDetails,residentPhone} = req.body;
-        console.log(fullName,phone,visitorFor,residentPhone);
-        if(!fullName || !phone || !visitorFor || !residentPhone){
+        const {fullName, phone, visitorFor, vehicleDetails,flatNo,block} = req.body;
+        //const {photo} = req.files;
+        console.log(fullName,phone,visitorFor);
+        if(!fullName || !phone || !visitorFor || !flatNo || !block){
             return res.status(400).json({
                 success:false,
                 message:"All details are mandatory",
             });
         };
+        // if(!profilePhoto) {
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"All details are mandatory",
+        //     });
+        // }
+            //================image mimetype verify========================
+        // const allowedMimeType = ['image/png','image/jpeg', 'webp'];
+    
+        // if(!allowedMimeType.includes(profilePhoto.mimetype.toLowerCase())){
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"Upload image of the given format only",
+        //     });
+        // }
+    
+        //==========================image uppload to cloudinary===================//
+    
+        // const cloudinaryRes = await cloudinary.uploader.upload(profilePhoto.tempFilePath)
+        // if(!cloudinaryRes.secure_url) {
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"Failed to upload image, try again",
+        //     });
+        // }
+        // console.log(cloudinaryRes);
 
         /////////////////////////////////////////////check if resident exists//////////////////////////////////////////////////////////////////////
-        const user2 = await Resident.findOne({fullName:visitorFor,phone:residentPhone});
+        const user2 = await Resident.findOne({flatNo:flatNo,block:block, visitorFor:visitorFor});
         console.log(user2);
         if(!user2){
              return res.status(400).json({
@@ -45,9 +72,11 @@ export const handleVisitorAdd = async(req,res) =>{
         const result = await Visitors.create({
             fullName,
             phone,
+            //save cloudinary url
             visitorFor,
             vehicleDetails,
-            residentPhone,
+            flatNo,
+            block,
             consent: 'ALLOWED' ,
             resident:residentId
         });

@@ -36,6 +36,10 @@ const serviceSchema = new mongoose.Schema({
     type: Number, // Optional: rating for this specific service
     default: 0
   },
+  peopleRated: {
+    type: Number, // Optional: rating for this specific service
+    default: 0
+  },
   contact: {
     type: String, // Optional: service-specific contact, fallback to vendor's contact
     default: null
