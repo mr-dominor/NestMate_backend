@@ -16,12 +16,6 @@ export const handleAddGuards = async(req,res)=>{
         //verifying ADMINLEVEL
         const {id} = req.user;
         const user = await Admin.findById(id);
-        if(user.adminlevel !== 'SUPER ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this funcion",
-            });
-        }
         const {fullName,phone,shift,status} = req.body;
         if(!fullName ||!phone || !shift){
             return res.status(400).json({

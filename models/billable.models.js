@@ -6,15 +6,15 @@ const billSchema = new mongoose.Schema({
         required:true
     },
     vendorId:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'vendors'
     },
     serviceId:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'services'
     },
     residentId:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'resident',
     },
     price:{

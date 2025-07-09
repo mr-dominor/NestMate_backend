@@ -1,17 +1,10 @@
-import { Notices } from "../models/notices.models";
-import { Complaints } from "../models/complaints.models";
+import { Notices } from "../models/notices.models.js";
+import { Complaints } from "../models/complaints.models.js";
 
 /////////////////////////////////////////////////////HANDLING NOTICES & EVENTS///////////////////////////////////////////////////////////////
 export const handleNoticesCreate = async(req,res) =>{
     try {
-        const {id} = req.user;
-        const user = await Admin.findById(id);
-        if(user.adminlevel !== 'SUPER ADMIN' || user.adminlevel != 'ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this function",
-            });
-        }
+
         const {contentType,contentCategory, contentExp} = req.body;
         if(!contentType || !contentCategory || !contentExp){
             return res.status(400).json({

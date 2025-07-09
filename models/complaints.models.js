@@ -33,5 +33,5 @@ const complaintSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-const Complaints = mongoose.model("notices",complaintSchema);
+const Complaints = mongoose.model("complaints",complaintSchema);
 export {Complaints};

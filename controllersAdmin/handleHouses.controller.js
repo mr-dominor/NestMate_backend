@@ -13,22 +13,7 @@ function generateRandom(){
 
 export const handleAddHouse = async(req,res)=>{
     try {
-        const {id} = req.user;
-        const user = await Admin.findById(id);
-        if(user.adminlevel !== 'SUPER ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this funcion",
-            });
-        }
 
-        const {block,flatNo} = req.body;
-        if(!block || !flatNo){
-            return res.status(400).json({
-                success:false,
-                message:"All fields are required",
-            });
-        }
         const result = await Houses.findOne({flatNo,block});
         if(result){
             return res.status(400).json({
@@ -57,15 +42,7 @@ export const handleAddHouse = async(req,res)=>{
 
 export const handleAllotHouse = async(req,res)=>{
     try {
-        //verifying role
-        const {id} = req.user;
-        const user = await Admin.findById(id);
-        if(user.adminlevel !== 'SUPER ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this funcion",
-            });
-        }
+ 
         const {flatNo,block,ownerStatus,fullName,registry,phone,email,nominee,tenure} = req.body;
         if(!flatNo || !block || !ownerStatus || !fullName || !registry  || !phone || !email || !nominee){
             return res.status(400).json({
@@ -137,15 +114,7 @@ export const handleAllotHouse = async(req,res)=>{
 
 export const handleUpdateHouse = async(req,res)=>{
     try {
-        //verifying role
-        const {id} = req.user;
-        const user = await Admin.findById(id);
-        if(user.adminlevel!== 'SUPER ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this funcion",
-            });
-        }
+        
         const {flatNo, block} =  req.body;
         const pass = generateRandom();
         const updated = await Houses.findOneAndUpdate({flatNo,block}, req.body,pass,{new:true})
@@ -168,15 +137,6 @@ export const handleUpdateHouse = async(req,res)=>{
 
 export const handleDeleteOwner = async(req,res)=>{
     try {
-        const {id} = req.user;
-        const user = await Admin.findById(id);
-        if(user.adminlevel !== 'SUPER ADMIN'){
-            return res.status(400).json({
-                success:false,
-                message:"You not authorized to do this funcion",
-            });
-        }
-
         const {block,flatNo} = req.body;
         if(!block || !flatNo){
             return res.status(400).json({

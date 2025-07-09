@@ -35,19 +35,19 @@ const adminSchema = new mongoose.Schema({
         default:'ADMIN',
         required:true
     },
-    adminlevel:{
-        type:String,
-        enum:['SECRATARY','SUPER ADMIN','MANAGER'],
-        required:true,
-    },
-    passkey:{
-        type:String,
-        unique:true,
-        required:true,
-    },
+    // adminlevel:{
+    //     type:String,
+    //     enum:['SECRATARY','SUPER ADMIN','MANAGER'],
+    //     required:true,
+    // },
+    // passkey:{
+    //     type:String,
+    //     unique:true,
+    //     required:true,
+    // },
     emnum:{
         type:String,
-        required:true
+        //required:true
     },
 },{timestamps:true});
 
